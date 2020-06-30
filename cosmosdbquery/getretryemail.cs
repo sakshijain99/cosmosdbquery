@@ -33,10 +33,13 @@ public class getretryemail
     }
     public class getmainmail
     {
-        [JsonProperty(PropertyName = "id")]
-        public string Id { get; set; }
+        //[JsonProperty(PropertyName = "id")]
+       // public string Id { get; set; }
 
         public VerifyEmailResponse VerifyEmailResponse { get; set; }
+        public string id { get; set; }
+      
+        public string partitionKey { get; set; }
     }
     public  class VerifyEmailResponse
     {
@@ -169,7 +172,7 @@ public class getretryemail
         {
             try
             {
-                ItemResponse<getmainmail> Response = await containermain.UpsertItemAsync<getmainmail>(obj,new PartitionKey(obj.Id.Substring(0,2)));
+                ItemResponse<getmainmail> Response = await containermain.UpsertItemAsync<getmainmail>(obj,new PartitionKey(obj.id.Substring(0,2)));
                 Console.WriteLine("updated item in database with id: {0} \n", Response.Resource.VerifyEmailResponse.VerifyEmailResult.ServiceResult.Email.Complete);
                             }
             catch (Exception e)
@@ -226,7 +229,7 @@ public class getretryemail
         {
 
             await AddItemstoMainContainer(obj);
-            await searchRetry(obj.Id);
+            await searchRetry(obj.id);
             if (retrysearchlist.Count != 0)
             {
                 var item = retrysearchlist[0];
